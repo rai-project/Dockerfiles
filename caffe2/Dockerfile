@@ -14,9 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     protobuf-compiler \
     libgoogle-glog-dev
 
-RUN git clone --recursive https://github.com/caffe2/caffe2.git && \
-    pip install --upgrade pip && \
-    pip install numpy protobuf
+RUN git clone --recursive https://github.com/caffe2/caffe2.git
 
 ########## OPTIONAL DEPENDENCIES ################
 
@@ -39,20 +37,8 @@ RUN apt-get install -y --no-install-recommends \
     python-scipy \
     wget
 
-RUN pip install \
-    flask \
-    graphviz \
-    hypothesis \
-    jupyter \
-    matplotlib \
-    pydot \
-    python-nvd3 \
-    pyyaml \
-    requests \
-    scikit-image \
-    scipy \
-    setuptools \
-    tornado
+RUN pip install -U setuptools
+
 
 ########## INSTALLATION STEPS ###################
 RUN cd caffe2 && make && cd build && make install
