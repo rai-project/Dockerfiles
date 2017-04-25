@@ -6,6 +6,6 @@ resources:
   network: false
 commands:
   build_image:
-    image_name: rai/cuda_ppc64le:devel-8.0
+    image_name: rai/keras:8.0
     dockerfile: "./Dockerfile"
     # no_cache: true

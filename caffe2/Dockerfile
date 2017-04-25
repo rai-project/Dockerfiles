@@ -14,8 +14,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     protobuf-compiler \
     libgoogle-glog-dev
 
-RUN git clone --recursive https://github.com/caffe2/caffe2.git
-
 ########## OPTIONAL DEPENDENCIES ################
 
 RUN apt-get install -y --no-install-recommends \
@@ -41,6 +39,9 @@ RUN pip install -U setuptools
 
 
 ########## INSTALLATION STEPS ###################
+
+RUN git clone  -b 'v0.7.0' --single-branch --depth 1 --recursive https://github.com/caffe2/caffe2.git
+
 RUN cd caffe2 && make && cd build && make install
 
 ENV PYTHONPATH /usr/local
