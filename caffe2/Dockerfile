@@ -57,7 +57,7 @@ RUN cat /tmp/caffe2/third_party/benchmark/src/cycleclock.h
 RUN mkdir build && \
     cd build && \
     cmake .. $(python ../scripts/get_python_cmake_flags.py) -DBUILD_TEST=OFF && \
-    make -j$(nproc) && \
+    make -j $(nproc) && \
     make install
 
 
