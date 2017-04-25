@@ -52,7 +52,7 @@ WORKDIR /tmp
 RUN git clone -b 3.3.x https://github.com/google/protobuf /tmp/protobuf && \
   cd /tmp/protobuf && \
   ./autogen.sh && \
-  ./configure && \
+  ./configure --prefix=/usr && \
   make && \
   make install &&\
   ldconfig

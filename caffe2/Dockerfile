@@ -40,9 +40,16 @@ RUN pip install -U setuptools
 
 ########## INSTALLATION STEPS ###################
 
-RUN git clone  -b 'v0.7.0' --single-branch --depth 1 --recursive https://github.com/caffe2/caffe2.git
+RUN git clone --single-branch --depth 1 --recursive https://github.com/caffe2/caffe2.git && \
+    cd caffe2 && \
+    cd third_party/benchmark && \
+    git checkout master && \
+    git pull && \
+    cd ../.. && \
+    make && \
+    cd build && \
+    make install
 
-RUN cd caffe2 && make && cd build && make install
 
 ENV PYTHONPATH /usr/local
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
