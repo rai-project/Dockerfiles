@@ -6,6 +6,6 @@ resources:
   network: false
 commands:
   build_image:
-    image_name: rai/caffe2:8.0
+    image_name: rai/conda:8.0
     dockerfile: "./Dockerfile"
     # no_cache: true
