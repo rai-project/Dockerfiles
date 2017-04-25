@@ -7,8 +7,8 @@ RUN git clone https://github.com/cuMF/cumf_als && \
     git clone https://github.com/cuMF/cumf_ccd && \
     cd cumf_sgd && \
     cd data/netflix && \
-    wget http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mme && \
-    wget http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mm && \
+    curl -fsSL http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mme -O && \
+    curl -fsSL http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mm -O && \
     prepare.sh && \
     cd ../.. && \
     make

@@ -8,3 +8,4 @@ commands:
   build_image:
     image_name: rai/nccl:8.0
     dockerfile: "./Dockerfile"
+    no_cache: true

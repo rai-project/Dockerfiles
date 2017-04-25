@@ -5,7 +5,7 @@ LABEL com.nvidia.volumes.needed="rai-cuda"
 
 ENV ARCH ppc64le
 
-RUN apt-get update && apt-get -y --no-install-recommends install wget cmake curl git
+RUN apt-get update && apt-get -y --no-install-recommends install wget cmake curl git ca-certificates
 
 WORKDIR /tmp
 RUN CUDA_REPO_URL="http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/ppc64el/cuda-repo-ubuntu1604_8.0.61-1_ppc64el.deb" && \
