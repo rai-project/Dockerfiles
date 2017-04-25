@@ -7,8 +7,8 @@ RUN git clone https://github.com/cuMF/cumf_als && \
     git clone https://github.com/cuMF/cumf_ccd
 
 WORKDIR /usr/local/cumf_sgd/data/netflix/
-ADD http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mme .
-ADD http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mm .
+RUN curl -fsSL http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mme -O
+RUN curl -fsSL http://www.select.cs.cmu.edu/code/graphlab/datasets/netflix_mm -O
 
 RUN cd /usr/local/cumf_sgd/data/netflix && \
     make transform && \

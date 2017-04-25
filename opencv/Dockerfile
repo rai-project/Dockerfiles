@@ -80,10 +80,9 @@ RUN cmake \
         -DINSTALL_TESTS=OFF \
         -DOPENCV_TEST_DATA_PATH=../opencv_extra/testdata \
         .. &&\
-	cd ~/opencv/build && \
-    make -j $(nproc) VERBOSE=1 && \
+	make -j $(nproc) VERBOSE=1 && \
     make install && \
     ldconfig && \
 
-    cp ~/opencv/build/lib/cv2.so /usr/local/lib/python2.7/dist-packages/
+    cp lib/cv2.so /usr/local/lib/python2.7/dist-packages/
 
