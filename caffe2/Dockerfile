@@ -46,9 +46,6 @@ RUN git clone --single-branch --depth 1 --recursive https://github.com/caffe2/ca
 
 WORKDIR /tmp/caffe2
 
-RUN cd third_party/benchmark && \
-    git checkout HEAD
-
 RUN mkdir build && \
     cd build && \
     cmake .. $(python ../scripts/get_python_cmake_flags.py) -DBUILD_TEST=OFF && \
