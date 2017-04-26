@@ -2,7 +2,9 @@ FROM ppc64le/debian:jessie
 MAINTAINER Abdul Dakkak <dakkak@illinois.edu>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git 
+    git ca-certificates
+
+RUN update-ca-certificates -f
 
 WORKDIR /tmp
 
