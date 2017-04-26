@@ -49,11 +49,6 @@ WORKDIR /tmp/caffe2
 RUN cd third_party/benchmark && \
     git checkout HEAD
 
-RUN rm -fr /tmp/caffe2/third_party/benchmark && \
-    git clone https://github.com/google/benchmark /tmp/caffe2/third_party/benchmark
-
-RUN cat /tmp/caffe2/third_party/benchmark/src/cycleclock.h
-
 RUN mkdir build && \
     cd build && \
     cmake .. $(python ../scripts/get_python_cmake_flags.py) -DBUILD_TEST=OFF && \
