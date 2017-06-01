@@ -1,0 +1,14 @@
+FROM rai/cuda_ppc64le:devel-8.0
+MAINTAINER Carl Pearson <pearson@illinois.edu>
+
+ENV CUDNN_VERSION 5
+LABEL com.nvidia.cudnn.version="5"
+
+RUN apt-get update && apt-get install -y \
+        curl && \
+    rm -rf /var/lib/apt/lists/*
+    
+RUN curl -fsSL http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/cudnn-8.0-linux-ppc64le-v5.1.tgz -O && \
+    tar -xzf cudnn-8.0-linux-ppc64le-v5.1.tgz -C /usr/local && \
+    rm cudnn-8.0-linux-ppc64le-v5.1.tgz && \
+    ldconfig
