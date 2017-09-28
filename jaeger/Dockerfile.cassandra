@@ -1,0 +1,21 @@
+FROM cassandra:3.11
+
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VCS_URL
+ARG ARCH
+LABEL org.carml.jaeger.cassandra.build-date=$BUILD_DATE \
+      org.carml.jaeger.cassandra.name="jaeger/cassandra" \
+      org.carml.jaeger.cassandra.description="" \
+      org.carml.jaeger.cassandra.url="https://www.carml.org/" \
+      org.carml.jaeger.cassandra.vcs-ref=$VCS_REF \
+      org.carml.jaeger.cassandra.vcs-url=$VCS_URL \
+      org.carml.jaeger.cassandra.vendor="CarML" \
+      org.carml.jaeger.cassandra.arch=$ARCH \
+      org.carml.jaeger.cassandra.schema-version="1.0"
+
+COPY cassandra/schema/* /cassandra-schema/
+
+ENV CQLSH_HOST=cassandra
+CMD ["/cassandra-schema/docker.sh"]
