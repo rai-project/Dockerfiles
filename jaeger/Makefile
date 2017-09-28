@@ -74,7 +74,12 @@ docker_build_cassandra: ## Build Cassandra
 		-f Dockerfile.cassandra \
 		-t $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG) .
 
-docker_build: docker_build_cassandra ## Build images
+docker_build_standalone: ## Build Cassandra
+	@docker build $(BUILD_ARGS) \
+		-f Dockerfile.standalone \
+		-t $(DOCKER_IMAGE):standalone-$(ARCH)-$(DOCKER_TAG) .
+
+docker_build: docker_build_base docker_build_cassandra docker_build_query docker_build_collector docker_build_standalone ## Build docker files (order matters)
 
 docker_push_base: ## Tag image as latest and Push to DockerHub
 	docker tag $(DOCKER_IMAGE):base-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):base-$(ARCH)-latest
@@ -101,7 +106,18 @@ docker_push_cassandra: ## Tag image as latest and Push to DockerHub
 	docker push $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG)
 	docker push $(DOCKER_IMAGE):cassandra-$(ARCH)-latest
 
-docker_push: docker_push_cassandra ## Tag image as latest and Push to DockerHub
+docker_push_standalone: ## Tag image as latest and Push to DockerHub
+	docker tag $(DOCKER_IMAGE):standalone-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):standalone-$(ARCH)-latest
+	docker push $(DOCKER_IMAGE):standalone-$(ARCH)-$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):standalone-$(ARCH)-latest
+
+docker_push_default: ## Tag image as latest and Push to DockerHub
+	docker tag $(DOCKER_IMAGE):standalone-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):$(ARCH)-$(DOCKER_TAG)
+	docker tag $(DOCKER_IMAGE):standalone-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):$(ARCH)-latest
+	docker push $(DOCKER_IMAGE):$(ARCH)-$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):$(ARCH)-latest
+
+docker_push: docker_push_base docker_push_cassandra docker_push_query docker_push_collector docker_push_standalone docker_push_default ## Tag image as latest and Push to DockerHub
 
 output:
 	@echo Docker Image: $(DOCKER_IMAGE):$(DOCKER_TAG)

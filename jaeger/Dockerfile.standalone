@@ -1,0 +1,45 @@
+FROM carml/consul:base-ppc64le-latest
+
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VCS_URL
+ARG VERSION
+ARG ARCH
+LABEL org.carml.jaeger.standalone.build-date=$BUILD_DATE \
+      org.carml.jaeger.standalone.name="jaeger/standalone" \
+      org.carml.jaeger.standalone.description="" \
+      org.carml.jaeger.standalone.url="https://www.carml.org/" \
+      org.carml.jaeger.standalone.vcs-ref=$VCS_REF \
+      org.carml.jaeger.standalone.vcs-url=$VCS_URL \
+      org.carml.jaeger.standalone.vendor="CarML" \
+      org.carml.jaeger.standalone.arch=$ARCH \
+      org.carml.jaeger.standalone.schema-version="1.0"
+
+
+RUN cd $GOPATH/src/github.com/uber/jaeger && \
+    cd jaeger-ui && yarn install && npm run build && \
+    cp -r build /opt/jaeger-ui && \
+    cd .. && \
+    CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o /usr/bin/standalone-linux ./cmd/standalone/main.go && \
+    rm -fr $GOPATH
+
+# Agent zipkin.thrift compact
+EXPOSE 5775/udp
+
+# Agent jaeger.thrift compact
+EXPOSE 6831/udp
+
+# Agent jaeger.thrift binary
+EXPOSE 6832/udp
+
+# Agent config HTTP
+EXPOSE 5778
+
+# Collector HTTP
+EXPOSE 14268
+
+# Web HTTP
+EXPOSE 16686
+
+CMD ["/usr/bin/standalone-linux", "--query.static-files=/opt/jaeger-ui/", "--span-storage.type=memory"]

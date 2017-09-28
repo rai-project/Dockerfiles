@@ -6,15 +6,15 @@ ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
 ARG ARCH
-LABEL org.carml.jaeger.agent.build-date=$BUILD_DATE \
-      org.carml.jaeger.agent.name="jaeger/collector" \
-      org.carml.jaeger.agent.description="" \
-      org.carml.jaeger.agent.url="https://www.carml.org/" \
-      org.carml.jaeger.agent.vcs-ref=$VCS_REF \
-      org.carml.jaeger.agent.vcs-url=$VCS_URL \
-      org.carml.jaeger.agent.vendor="CarML" \
-      org.carml.jaeger.agent.arch=$ARCH \
-      org.carml.jaeger.agent.schema-version="1.0"
+LABEL org.carml.jaeger.collector.build-date=$BUILD_DATE \
+      org.carml.jaeger.collector.name="jaeger/collector" \
+      org.carml.jaeger.collector.description="" \
+      org.carml.jaeger.collector.url="https://www.carml.org/" \
+      org.carml.jaeger.collector.vcs-ref=$VCS_REF \
+      org.carml.jaeger.collector.vcs-url=$VCS_URL \
+      org.carml.jaeger.collector.vendor="CarML" \
+      org.carml.jaeger.collector.arch=$ARCH \
+      org.carml.jaeger.collector.schema-version="1.0"
 
 RUN cd $GOPATH/src/github.com/uber/jaeger && \
     CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o /usr/bin/collector-linux ./cmd/collector/main.go && \
