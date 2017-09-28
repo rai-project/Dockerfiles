@@ -1,0 +1,34 @@
+FROM carml/consul:base-ppc64le-latest
+
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VCS_URL
+ARG VERSION
+ARG ARCH
+LABEL org.carml.jaeger.query.build-date=$BUILD_DATE \
+      org.carml.jaeger.query.name="jaeger/query" \
+      org.carml.jaeger.query.description="" \
+      org.carml.jaeger.query.url="https://www.carml.org/" \
+      org.carml.jaeger.query.vcs-ref=$VCS_REF \
+      org.carml.jaeger.query.vcs-url=$VCS_URL \
+      org.carml.jaeger.query.vendor="CarML" \
+      org.carml.jaeger.query.arch=$ARCH \
+      org.carml.jaeger.query.schema-version="1.0"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+	nodejs \
+    && \
+    rm -rf /var/lib/apt/lists/* 
+
+RUN npm install -g yarn
+
+
+RUN cd $GOPATH/src/github.com/uber/jaeger && \
+    cd jaeger-ui && yarn install && npm run build && \
+    rm -rf jaeger-ui-build && mkdir /opt && \
+    cp -r jaeger-ui/build /opt/jaeger-ui && \
+    CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o /usr/bin/query-linux ./cmd/query/main.go && \
+    rm -fr $GOPATH
+
+CMD ["/usr/bin/query-linux", "--query.static-files=/opt/jaeger-ui/"]
