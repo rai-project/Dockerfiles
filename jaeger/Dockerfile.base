@@ -20,6 +20,7 @@ LABEL org.carml.jaeger.base.build-date=$BUILD_DATE \
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	curl \
 	git \
+	xz-utils \
         ca-certificates \
     && \
     rm -rf /var/lib/apt/lists/* 
