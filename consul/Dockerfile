@@ -7,7 +7,6 @@ ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
 ARG ARCH
-ARG FRAMEWORK_VERSION
 ARG CONSUL_VERSION
 LABEL org.carml.consul.build-date=$BUILD_DATE \
       org.carml.consul.name="consul" \

@@ -49,12 +49,22 @@ BUILD_ARGS = --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(GIT_COMMIT) \
 		--build-arg ARCH=$(ARCH) 
 
-docker_build_cassandra: ## Build GPU Docker image
+docker_build_agent: ## Build Agent
+	@docker build $(BUILD_ARGS) \
+		-f Dockerfile.agent \
+		-t $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG) .
+
+docker_build_cassandra: ## Build Cassandra
 	@docker build $(BUILD_ARGS) \
 		-f Dockerfile.cassandra \
 		-t $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG) .
 
-docker_build: docker_build_cassandra ## Build GPU Docker image
+docker_build: docker_build_cassandra ## Build images
+
+docker_push_agent: ## Tag image as latest and Push to DockerHub
+	docker tag $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):agent-$(ARCH)-latest
+	docker push $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):agent-$(ARCH)-latest
 
 docker_push_cassandra: ## Tag image as latest and Push to DockerHub
 	docker tag $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):cassandra-$(ARCH)-latest
