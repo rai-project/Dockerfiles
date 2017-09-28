@@ -6,15 +6,15 @@ ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
 ARG ARCH
-LABEL org.carml.jaeger.agent.build-date=$BUILD_DATE \
-      org.carml.jaeger.agent.name="jaeger/cassandra" \
-      org.carml.jaeger.agent.description="" \
-      org.carml.jaeger.agent.url="https://www.carml.org/" \
-      org.carml.jaeger.agent.vcs-ref=$VCS_REF \
-      org.carml.jaeger.agent.vcs-url=$VCS_URL \
-      org.carml.jaeger.agent.vendor="CarML" \
-      org.carml.jaeger.agent.arch=$ARCH \
-      org.carml.jaeger.agent.schema-version="1.0"
+LABEL org.carml.jaeger.base.build-date=$BUILD_DATE \
+      org.carml.jaeger.base.name="jaeger/base" \
+      org.carml.jaeger.base.description="" \
+      org.carml.jaeger.base.url="https://www.carml.org/" \
+      org.carml.jaeger.base.vcs-ref=$VCS_REF \
+      org.carml.jaeger.base.vcs-url=$VCS_URL \
+      org.carml.jaeger.base.vendor="CarML" \
+      org.carml.jaeger.base.arch=$ARCH \
+      org.carml.jaeger.base.schema-version="1.0"
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -48,11 +48,4 @@ RUN go get github.com/Masterminds/glide
 
 RUN go get github.com/uber/jaeger && \
     cd $GOPATH/src/github.com/uber/jaeger && \
-    glide install && \
-    CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o ./cmd/agent/agent-linux ./cmd/agent/main.go && \
-    cp ./cmd/agent/agent-linux /usr/bin && \
-    rm -fr $GOPATH
-
-
-EXPOSE 5775/udp 6831/udp 6832/udp 5778
-CMD ["/usr/bin/agent-linux"]
+    glide install

@@ -49,6 +49,11 @@ BUILD_ARGS = --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(GIT_COMMIT) \
 		--build-arg ARCH=$(ARCH) 
 
+docker_build_base: ## Build Agent
+	@docker build $(BUILD_ARGS) \
+		-f Dockerfile.base \
+		-t $(DOCKER_IMAGE):base-$(ARCH)-$(DOCKER_TAG) .
+
 docker_build_agent: ## Build Agent
 	@docker build $(BUILD_ARGS) \
 		-f Dockerfile.agent \
@@ -60,6 +65,11 @@ docker_build_cassandra: ## Build Cassandra
 		-t $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG) .
 
 docker_build: docker_build_cassandra ## Build images
+
+docker_push_base: ## Tag image as latest and Push to DockerHub
+	docker tag $(DOCKER_IMAGE):base-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):base-$(ARCH)-latest
+	docker push $(DOCKER_IMAGE):base-$(ARCH)-$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):base-$(ARCH)-latest
 
 docker_push_agent: ## Tag image as latest and Push to DockerHub
 	docker tag $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):agent-$(ARCH)-latest
