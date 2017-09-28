@@ -56,7 +56,7 @@ docker_build_cassandra: ## Build GPU Docker image
 
 docker_build: docker_build_cassandra ## Build GPU Docker image
 
-docker_push: ## Tag image as latest and Push to DockerHub
+docker_push_cassandra: ## Tag image as latest and Push to DockerHub
 	docker tag $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):cassandra-$(ARCH)-latest
 	docker push $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG)
 	docker push $(DOCKER_IMAGE):cassandra-$(ARCH)-latest
