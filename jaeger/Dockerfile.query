@@ -16,19 +16,14 @@ LABEL org.carml.jaeger.query.build-date=$BUILD_DATE \
       org.carml.jaeger.query.arch=$ARCH \
       org.carml.jaeger.query.schema-version="1.0"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-	nodejs \
-    && \
-    rm -rf /var/lib/apt/lists/* 
-
-RUN npm install -g yarn
-
 
 RUN cd $GOPATH/src/github.com/uber/jaeger && \
     cd jaeger-ui && yarn install && npm run build && \
-    rm -rf jaeger-ui-build && mkdir /opt && \
-    cp -r jaeger-ui/build /opt/jaeger-ui && \
+    cp -r build /opt/jaeger-ui && \
+    cd .. && \
     CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o /usr/bin/query-linux ./cmd/query/main.go && \
     rm -fr $GOPATH
 
+
+EXPOSE 16686
 CMD ["/usr/bin/query-linux", "--query.static-files=/opt/jaeger-ui/"]

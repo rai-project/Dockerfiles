@@ -59,6 +59,16 @@ docker_build_agent: ## Build Agent
 		-f Dockerfile.agent \
 		-t $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG) .
 
+docker_build_query: ## Build Agent
+	@docker build $(BUILD_ARGS) \
+		-f Dockerfile.query \
+		-t $(DOCKER_IMAGE):query-$(ARCH)-$(DOCKER_TAG) .
+
+docker_build_collector: ## Build Agent
+	@docker build $(BUILD_ARGS) \
+		-f Dockerfile.collector \
+		-t $(DOCKER_IMAGE):collector-$(ARCH)-$(DOCKER_TAG) .
+
 docker_build_cassandra: ## Build Cassandra
 	@docker build $(BUILD_ARGS) \
 		-f Dockerfile.cassandra \
@@ -75,6 +85,16 @@ docker_push_agent: ## Tag image as latest and Push to DockerHub
 	docker tag $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):agent-$(ARCH)-latest
 	docker push $(DOCKER_IMAGE):agent-$(ARCH)-$(DOCKER_TAG)
 	docker push $(DOCKER_IMAGE):agent-$(ARCH)-latest
+
+docker_push_query: ## Tag image as latest and Push to DockerHub
+	docker tag $(DOCKER_IMAGE):query-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):query-$(ARCH)-latest
+	docker push $(DOCKER_IMAGE):query-$(ARCH)-$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):query-$(ARCH)-latest
+
+docker_push_collector: ## Tag image as latest and Push to DockerHub
+	docker tag $(DOCKER_IMAGE):collector-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):collector-$(ARCH)-latest
+	docker push $(DOCKER_IMAGE):collector-$(ARCH)-$(DOCKER_TAG)
+	docker push $(DOCKER_IMAGE):collector-$(ARCH)-latest
 
 docker_push_cassandra: ## Tag image as latest and Push to DockerHub
 	docker tag $(DOCKER_IMAGE):cassandra-$(ARCH)-$(DOCKER_TAG) $(DOCKER_IMAGE):cassandra-$(ARCH)-latest

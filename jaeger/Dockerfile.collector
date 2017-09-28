@@ -1,0 +1,26 @@
+FROM carml/consul:base-ppc64le-latest
+
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VCS_URL
+ARG VERSION
+ARG ARCH
+LABEL org.carml.jaeger.agent.build-date=$BUILD_DATE \
+      org.carml.jaeger.agent.name="jaeger/collector" \
+      org.carml.jaeger.agent.description="" \
+      org.carml.jaeger.agent.url="https://www.carml.org/" \
+      org.carml.jaeger.agent.vcs-ref=$VCS_REF \
+      org.carml.jaeger.agent.vcs-url=$VCS_URL \
+      org.carml.jaeger.agent.vendor="CarML" \
+      org.carml.jaeger.agent.arch=$ARCH \
+      org.carml.jaeger.agent.schema-version="1.0"
+
+RUN cd $GOPATH/src/github.com/uber/jaeger && \
+    CGO_ENABLED=0 GOOS=linux installsuffix=cgo go build -o /usr/bin/collector-linux ./cmd/collector/main.go && \
+    rm -fr $GOPATH
+
+
+EXPOSE 14267
+
+CMD ["/usr/bin/collector-linux"]
