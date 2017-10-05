@@ -1,12 +1,22 @@
 FROM ppc64le/debian:jessie
 MAINTAINER James Phillips <james@hashicorp.com> (@slackpad)
 
+
+RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
+  && case "${dpkgArch##*-}" in \
+    amd64) ARCH='x64';; \
+    ppc64el) ARCH='ppc64le';; \
+    s390x) ARCH='s390x';; \
+    arm64) ARCH='arm64';; \
+    armhf) ARCH='armv7l';; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac
+  
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VCS_URL
 ARG VERSION
-ARG ARCH
 ARG CONSUL_VERSION
 LABEL org.carml.consul.build-date=$BUILD_DATE \
       org.carml.consul.name="consul" \
@@ -20,7 +30,7 @@ LABEL org.carml.consul.build-date=$BUILD_DATE \
       org.carml.consul.consul_version=$CONSUL_VERSION \
       org.carml.consul.schema-version="1.0"
 
-
+  
 # This is the release of Consul to pull in.
 ENV CONSUL_VERSION=$CONSUL_VERSION
 
